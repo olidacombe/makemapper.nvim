@@ -1,9 +1,9 @@
 .PHONY: test
 
-lint:
-	luacheck lua/pluggy
+lint: # nvim_map(l)
+	luacheck lua/makemapper
 
-test:
+test: # nvim_map(t)
 	nvim --headless --noplugin \
 	-u scripts/minimal_init.vim \
 	-c "PlenaryBustedDirectory tests/plenary { minimal_init = './scripts/minimal_init.vim' }"

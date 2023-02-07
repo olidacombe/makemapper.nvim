@@ -1,4 +1,4 @@
-describe("pluggy", function()
+describe("makemapper", function()
     it("rocks", function()
         assert.is_true(true)
     end)
