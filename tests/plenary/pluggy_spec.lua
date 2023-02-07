@@ -1,0 +1,5 @@
+describe("pluggy", function()
+    it("rocks", function()
+        assert.is_true(true)
+    end)
+end)
