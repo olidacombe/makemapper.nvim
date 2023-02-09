@@ -9,7 +9,7 @@ local opts
 local set_mappings = function(m)
     local mappings = m or {}
     for target, suffix in pairs(mappings) do
-        vim.keymap.set("n", opts.prefix .. suffix, "! make " .. target, { desc = target })
+        vim.keymap.set("n", opts.prefix .. suffix, "<cmd>make " .. target .. "<cr>", { desc = target })
     end
 end
 
