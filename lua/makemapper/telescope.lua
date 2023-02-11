@@ -46,4 +46,9 @@ M.telescope = function()
     telescope(require("telescope.themes").get_dropdown {})
 end
 
+-- make this module callable
+setmetatable(M, {
+    __call = M.telescope
+})
+
 return M
