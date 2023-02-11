@@ -64,6 +64,17 @@ require("makemapper").setup({
 })
 ```
 
+# Which-key
+
+[whick-key](https://github.com/folke/which-key.nvim) users may wish to add a description to the
+prefix:
+
+```lua
+require("which-key").register({
+    m = { name = "make" }
+}, { mode = "n", prefix = "<leader>" })
+```
+
 # TODO
 
 + Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
