@@ -21,6 +21,7 @@ test: # nvim_map(t)
     echo running tests...
 
 no_mapping: # this target doesn't get an automatic keymap
+    echo I am harder to run from neovim
 ```
 
 If the above `Makefile` is in the root of your project, then the following
