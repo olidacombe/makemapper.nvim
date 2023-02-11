@@ -78,4 +78,6 @@ require("which-key").register({
 
 # TODO
 
++ Other configurable run strategies, not just terminal in a vertical split!
 + Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
++ Filter out "special" targets like `.PHONY`
