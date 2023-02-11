@@ -1,3 +1,5 @@
+local make_runner = require("makemapper").make_runner
+
 local M = {}
 
 -- see if the file exists
@@ -33,13 +35,22 @@ M.makefile_buffer = function()
     return buf
 end
 
+M._parse_makefile = function()
+    local makefile = M.makefile_buffer()
+    if not makefile then return {} end
+    return M.parse_buffer(makefile)
+end
+
+M.parse_targets = function()
+    P("PARSE TARGETS")
+    return M._parse_makefile().targets or {}
+end
+
 -- finds annotations in `Makefile` and returns a table of
 -- suffix -> target
 -- assignments
 M.parse_mappings = function()
-    local makefile = M.makefile_buffer()
-    if not makefile then return {} end
-    return M.parse_buffer(makefile)
+    return M._parse_makefile().mappings or {}
 end
 
 local node_text = function(node, ctx)
@@ -52,6 +63,7 @@ end
 M.parse_rule_node = function(node, ctx)
     ctx = ctx or {}
     ctx.mappings = ctx.mappings or {}
+    ctx.targets = ctx.targets or {}
     ctx.bufnr = ctx.bufnr or 0
 
     local target
@@ -64,6 +76,7 @@ M.parse_rule_node = function(node, ctx)
         end
     end
     if target then
+        ctx.targets[target] = make_runner(target)
         ctx.mappings[target] = ctx.current_mapping_annotation
         ctx.current_mapping_annotation = nil
     end
@@ -102,16 +115,17 @@ M.parse_buffer = function(bufnr)
     local tsparser = vim.treesitter.get_parser(bufnr or 0, "make")
     local trees = tsparser:parse()
     local mappings = {}
+    local targets = {}
     if #trees < 1 then return mappings end
     local tree = trees[1]
 
     local root = tree:root()
-    local ctx = { bufnr = bufnr, mappings = mappings }
+    local ctx = { bufnr = bufnr, mappings = mappings, targets = targets }
     for node in root:iter_children() do
         M.parse_node(node, ctx)
     end
 
-    return mappings
+    return ctx
 end
 
 return M
