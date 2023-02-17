@@ -10,4 +10,4 @@ test: # nvim_map(t)
 	-c "PlenaryBustedDirectory tests/plenary { minimal_init = 'tests//init.lua' }"
 
 pre-commit:
-	pipx run pre-commit
+	pipx run pre-commit install
