@@ -9,6 +9,5 @@ test: # nvim_map(t)
 	-u tests/init.lua \
 	-c "PlenaryBustedDirectory tests/plenary { minimal_init = 'tests//init.lua' }"
 
-blost:
-	# thigeh
-	echo ok
+pre-commit:
+	pipx run pre-commit
