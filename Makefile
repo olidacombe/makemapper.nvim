@@ -5,10 +5,9 @@ lint:
 	luacheck lua/makemapper
 
 test: # nvim_map(t)
-	nvim --headless --noplugin \
-	-u scripts/minimal_init.vim \
-	-c "PlenaryBustedDirectory tests/plenary { minimal_init = './scripts/minimal_init.vim' }"
+	nvim --headless \
+	-u tests/init.lua \
+	-c "PlenaryBustedDirectory tests/plenary { minimal_init = 'tests//init.lua' }"
 
-blost:
-	# thigeh
-	echo ok
+pre-commit:
+	pipx run pre-commit install

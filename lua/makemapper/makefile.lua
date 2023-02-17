@@ -5,14 +5,18 @@ local M = {}
 -- see if the file exists
 local file_exists = function(file)
     local f = io.open(file, "rb")
-    if f then f:close() end
+    if f then
+        f:close()
+    end
     return f ~= nil
 end
 
 -- get all lines from a file, returns an empty
 -- list/table if the file does not exist
 local lines_from = function(file)
-    if not file_exists(file) then return nil end
+    if not file_exists(file) then
+        return nil
+    end
     local lines = {}
     for line in io.lines(file) do
         lines[#lines + 1] = line
@@ -26,7 +30,9 @@ M.makefile_buffer = function()
     local cwd = vim.fn.getcwd()
     local makefile_path = cwd .. "/Makefile"
     local lines = lines_from(makefile_path)
-    if lines == nil then return end
+    if lines == nil then
+        return
+    end
     -- create unlisted scratch buffer
     local buf = vim.api.nvim_create_buf(false, true)
     -- load lines of Makefile into it
@@ -37,12 +43,14 @@ end
 
 M._parse_makefile = function()
     local makefile = M.makefile_buffer()
-    if not makefile then return {} end
+    if not makefile then
+        return {}
+    end
     return M.parse_buffer(makefile)
 end
 
 M.parse_targets = function()
-    P("PARSE TARGETS")
+    P "PARSE TARGETS"
     return M._parse_makefile().targets or {}
 end
 
@@ -116,7 +124,9 @@ M.parse_buffer = function(bufnr)
     local trees = tsparser:parse()
     local mappings = {}
     local targets = {}
-    if #trees < 1 then return mappings end
+    if #trees < 1 then
+        return mappings
+    end
     local tree = trees[1]
 
     local root = tree:root()

@@ -14,6 +14,7 @@ ignore = {
 
 globals = {
     "_",
+    "P",
 }
 
 -- Global objects defined by the C code

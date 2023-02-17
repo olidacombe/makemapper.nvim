@@ -15,7 +15,7 @@ M.make_runner = function(target)
 end
 
 local default_opts = {
-    prefix = "<leader>m"
+    prefix = "<leader>m",
 }
 
 local opts
@@ -30,7 +30,7 @@ end
 M.setup = function(o)
     opts = vim.tbl_deep_extend("force", {}, default_opts, o or {})
 
-    set_mappings(require "makemapper.makefile".parse_mappings())
+    set_mappings(require("makemapper.makefile").parse_mappings())
 end
 
 return M
