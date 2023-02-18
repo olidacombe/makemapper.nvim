@@ -62,7 +62,20 @@ You can override settings in `setup`:
 ```lua
 require("makemapper").setup({
     prefix = "<leader>m", -- the prefix applied to all keymaps generated from annotations
+    runner = "nvim_vsplit",
+    -- runner can be one of:
+    --   "nvim_vsplit" (default)
+    --   "harpoon_tmux" (requires harpoon.nvim)
+    --   your own custom runner (a function taking a command string)
 })
+```
+
+## Changing Runners
+
+If you want to change runner after calling `setup`, then use:
+
+```lua
+require("makemapper").set_runner(...)
 ```
 
 # Which-key
@@ -79,6 +92,5 @@ require("which-key").register({
 # TODO
 
 + Document requirement for `make` treesitter parser to be installed
-+ Other configurable run strategies, not just terminal in a vertical split!
 + Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
 + Filter out "special" targets like `.PHONY`
