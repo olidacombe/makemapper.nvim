@@ -30,7 +30,16 @@ end
 M.setup = function(o)
     opts = vim.tbl_deep_extend("force", {}, default_opts, o or {})
 
-    set_mappings(require("makemapper.makefile").parse_mappings())
+    local augroup = vim.api.nvim_create_augroup("Makemapper", {})
+
+    local autocmd = vim.api.nvim_create_autocmd
+    autocmd("BufEnter", {
+        group = augroup,
+        pattern = "*",
+        callback = function()
+            set_mappings(require("makemapper.makefile").parse_mappings())
+        end
+    })
 end
 
 return M
