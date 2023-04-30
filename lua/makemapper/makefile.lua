@@ -4,6 +4,7 @@ local M = {}
 
 -- see if the file exists
 local file_exists = function(file)
+    if not file then return false end
     local f = io.open(file, "rb")
     if f then
         f:close()
@@ -24,11 +25,22 @@ local lines_from = function(file)
     return lines
 end
 
+-- search up from current buffer to cwd until we find a Makefile
+M.find_makefile = function(path)
+    path = path or vim.api.nvim_buf_get_name(0)
+    local cwd = vim.fn.getcwd()
+    -- if we've reached cwd, then no Makefile has been found
+    if path:sub(1, #cwd) ~= cwd then return nil end
+    local dir = path:gsub("/[^/]*$", "")
+    local candidate = dir .. "/Makefile"
+    if file_exists(candidate) then return candidate end
+    return M.find_makefile(dir)
+end
+
 -- load Makefile into a buffer and return the id,
 -- or nil if not found
 M.makefile_buffer = function()
-    local cwd = vim.fn.getcwd()
-    local makefile_path = cwd .. "/Makefile"
+    local makefile_path = M.find_makefile()
     local lines = lines_from(makefile_path)
     if lines == nil then
         return
@@ -137,5 +149,7 @@ M.parse_buffer = function(bufnr)
 
     return ctx
 end
+
+P(M.makefile_buffer())
 
 return M
