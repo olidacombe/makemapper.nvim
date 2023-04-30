@@ -41,6 +41,7 @@ end
 -- or nil if not found
 M.makefile_buffer = function()
     local makefile_path = M.find_makefile()
+    if not makefile_path then return end
     local lines = lines_from(makefile_path)
     if lines == nil then
         return
@@ -149,7 +150,5 @@ M.parse_buffer = function(bufnr)
 
     return ctx
 end
-
-P(M.makefile_buffer())
 
 return M
