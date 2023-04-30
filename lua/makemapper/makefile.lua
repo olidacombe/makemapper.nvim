@@ -29,6 +29,7 @@ end
 M.find_makefile = function(path)
     path = path or vim.api.nvim_buf_get_name(0)
     local cwd = vim.fn.getcwd()
+    if path == "" then path = cwd end
     -- if we've reached cwd, then no Makefile has been found
     if path:sub(1, #cwd) ~= cwd then return nil end
     local dir = path:gsub("/[^/]*$", "")
