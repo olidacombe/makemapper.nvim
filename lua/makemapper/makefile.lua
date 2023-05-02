@@ -2,14 +2,22 @@ local make_runner = require("makemapper").make_runner
 
 local M = {}
 
--- see if the file exists
+--- Check if a file or directory exists in this path
 local file_exists = function(file)
-    if not file then return false end
-    local f = io.open(file, "rb")
-    if f then
-        f:close()
+    local ok, err, code = os.rename(file, file)
+    if not ok then
+        if code == 13 then
+            -- Permission denied, but it exists
+            return true
+        end
     end
-    return f ~= nil
+    return ok, err
+end
+
+--- Check if a directory exists in this path
+local isdir = function(path)
+    -- "/" works on both Unix and Windows
+    return file_exists(path .. "/")
 end
 
 -- get all lines from a file, returns an empty
@@ -27,13 +35,15 @@ end
 
 -- search up from current buffer to cwd until we find a Makefile
 M.find_makefile = function(path)
-    path = path or vim.api.nvim_buf_get_name(0)
-    local cwd = vim.fn.getcwd()
-    if path == "" then path = cwd .. "/" end
+    -- sanitize buffer names like `oil:///foo`
+    path = path or vim.api.nvim_buf_get_name(0):gsub("^[^/]*/+", "/")
+    local cwd = vim.fn.getcwd() .. "/"
+    if path == "" then path = cwd end
     -- if we've reached cwd, then no Makefile has been found
     if path:sub(1, #cwd) ~= cwd then return nil end
-    local dir = path:gsub("/[^/]*$", "")
+    local dir = path:gsub("/+[^/]*$", "")
     local candidate = dir .. "/Makefile"
+    P(candidate)
     if file_exists(candidate) then return candidate end
     return M.find_makefile(dir)
 end
