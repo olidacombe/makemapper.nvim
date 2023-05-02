@@ -61,7 +61,7 @@ M.setup = function(o)
         pattern = "*",
         callback = function()
             set_mappings(require("makemapper.makefile").parse_mappings())
-        end
+        end,
     })
 end
 

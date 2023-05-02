@@ -38,19 +38,27 @@ M.find_makefile = function(path)
     -- sanitize buffer names like `oil:///foo`
     path = path or vim.api.nvim_buf_get_name(0):gsub("^[^/]*/+", "/")
     local cwd = vim.fn.getcwd() .. "/"
-    if path == "" then path = cwd end
+    if path == "" then
+        path = cwd
+    end
     -- if we've reached cwd, then no Makefile has been found
-    if path:sub(1, #cwd) ~= cwd then return nil end
+    if path:sub(1, #cwd) ~= cwd then
+        return nil
+    end
     local dir = path:gsub("/+[^/]*$", "")
     local candidate = dir .. "/Makefile"
-    if file_exists(candidate) then return candidate end
+    if file_exists(candidate) then
+        return candidate
+    end
     return M.find_makefile(dir)
 end
 
 -- load Makefile into a buffer and return the id,
 -- or nil if not found
 M.makefile_buffer = function(path)
-    if not path then return end
+    if not path then
+        return
+    end
     local lines = lines_from(path)
     if lines == nil then
         return
@@ -65,7 +73,9 @@ end
 
 M._parse_makefile = function()
     local makefile_path = M.find_makefile()
-    if not makefile_path then return {} end
+    if not makefile_path then
+        return {}
+    end
     local makefile = M.makefile_buffer(makefile_path)
     if not makefile then
         return {}
@@ -84,7 +94,9 @@ end
 -- assignments
 M.parse_mappings = function()
     local parsed, cwd = M._parse_makefile()
-    if not parsed.mappings then return {} end
+    if not parsed.mappings then
+        return {}
+    end
     return M._parse_makefile().mappings, cwd
 end
 
