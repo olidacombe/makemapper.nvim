@@ -43,17 +43,15 @@ M.find_makefile = function(path)
     if path:sub(1, #cwd) ~= cwd then return nil end
     local dir = path:gsub("/+[^/]*$", "")
     local candidate = dir .. "/Makefile"
-    P(candidate)
     if file_exists(candidate) then return candidate end
     return M.find_makefile(dir)
 end
 
 -- load Makefile into a buffer and return the id,
 -- or nil if not found
-M.makefile_buffer = function()
-    local makefile_path = M.find_makefile()
-    if not makefile_path then return end
-    local lines = lines_from(makefile_path)
+M.makefile_buffer = function(path)
+    if not path then return end
+    local lines = lines_from(path)
     if lines == nil then
         return
     end
@@ -66,11 +64,14 @@ M.makefile_buffer = function()
 end
 
 M._parse_makefile = function()
-    local makefile = M.makefile_buffer()
+    local makefile_path = M.find_makefile()
+    if not makefile_path then return {} end
+    local makefile = M.makefile_buffer(makefile_path)
     if not makefile then
         return {}
     end
-    return M.parse_buffer(makefile)
+    local makefile_cwd = makefile_path:gsub("Makefile$", "")
+    return M.parse_buffer(makefile), makefile_cwd
 end
 
 M.parse_targets = function()
@@ -82,7 +83,9 @@ end
 -- suffix -> target
 -- assignments
 M.parse_mappings = function()
-    return M._parse_makefile().mappings or {}
+    local parsed, cwd = M._parse_makefile()
+    if not parsed.mappings then return {} end
+    return M._parse_makefile().mappings, cwd
 end
 
 local node_text = function(node, ctx)

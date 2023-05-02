@@ -8,9 +8,9 @@ end
 local runner = term_nvim
 
 -- given a general strategy for running commands, curry in "make {target}"
-M.make_runner = function(target)
+M.make_runner = function(target, cwd)
     return function()
-        runner("make " .. target)
+        runner("cd " .. cwd .. "; make " .. target)
     end
 end
 
@@ -23,7 +23,7 @@ local opts
 -- store parsed mappings so that we can remove old ones on refresh events
 M._mappings = {}
 
-local set_mappings = function(m)
+local set_mappings = function(m, cwd)
     -- first clean up any existing
     for _, suffix in pairs(M._mappings) do
         vim.keymap.del("n", opts.prefix .. suffix)
@@ -39,7 +39,7 @@ local set_mappings = function(m)
     -- then set the new ones
     M._mappings = m or {}
     for target, suffix in pairs(M._mappings) do
-        vim.keymap.set("n", opts.prefix .. suffix, M.make_runner(target), { desc = target })
+        vim.keymap.set("n", opts.prefix .. suffix, M.make_runner(target, cwd), { desc = target })
     end
     if has_which_key then
         local mappings = {}
