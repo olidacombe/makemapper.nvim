@@ -24,8 +24,7 @@ no_mapping: # this target doesn't get an automatic keymap
     echo I am harder to run from neovim
 ```
 
-If the above `Makefile` is in the root of your project, then the following
-normal-mode keymaps are automatically created:
+Then the following normal-mode keymaps are automatically created:
 
 ```
 <leader>ml -> `make lint`
@@ -67,7 +66,7 @@ require("makemapper").setup({
 
 # Which-key
 
-[whick-key](https://github.com/folke/which-key.nvim) users may wish to add a description to the
+[which-key](https://github.com/folke/which-key.nvim) users may wish to add a description to the
 prefix:
 
 ```lua
@@ -79,6 +78,8 @@ require("which-key").register({
 # TODO
 
 + Document requirement for `make` treesitter parser to be installed
++ Document (and test thoroughly) the "deep Makefiles" feature
 + Other configurable run strategies, not just terminal in a vertical split!
 + Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
 + Filter out "special" targets like `.PHONY`
++ Try to support Windows?
