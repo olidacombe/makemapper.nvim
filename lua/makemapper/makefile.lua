@@ -14,12 +14,6 @@ local file_exists = function(file)
     return ok, err
 end
 
---- Check if a directory exists in this path
-local isdir = function(path)
-    -- "/" works on both Unix and Windows
-    return file_exists(path .. "/")
-end
-
 -- get all lines from a file, returns an empty
 -- list/table if the file does not exist
 local lines_from = function(file)
