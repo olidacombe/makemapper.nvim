@@ -63,6 +63,14 @@ M.setup = function(o)
             set_mappings(require("makemapper.makefile").parse_mappings())
         end,
     })
+
+    autocmd("BufWritePost", {
+        group = augroup,
+        pattern = "Makefile",
+        callback = function()
+            set_mappings(require("makemapper.makefile").parse_mappings())
+        end,
+    })
 end
 
 return M
