@@ -60,7 +60,9 @@ M.setup = function(o)
         group = augroup,
         pattern = "*",
         callback = function()
-            set_mappings(require("makemapper.makefile").parse_mappings())
+            vim.schedule(function()
+                set_mappings(require("makemapper.makefile").parse_mappings())
+            end)
         end,
     })
 
@@ -68,7 +70,9 @@ M.setup = function(o)
         group = augroup,
         pattern = "Makefile",
         callback = function()
-            set_mappings(require("makemapper.makefile").parse_mappings())
+            vim.schedule(function()
+                set_mappings(require("makemapper.makefile").parse_mappings())
+            end)
         end,
     })
 end
