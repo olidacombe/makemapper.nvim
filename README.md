@@ -7,7 +7,6 @@ by means of parsing them from comments affixed to make targets in your
 There is also a [telescope](https://github.com/nvim-telescope/telescope.nvim)
 extension to run make targets from a picker.
 
-
 ## Example
 
 Annotate your `Makefile` with comments containing `nvim_map(...)`:
@@ -70,16 +69,17 @@ require("makemapper").setup({
 prefix:
 
 ```lua
-require("which-key").register({
-    m = { name = "make" }
-}, { mode = "n", prefix = "<leader>" })
+
+require("which-key").add({
+    { "<leader>m", group = "make" },
+})
 ```
 
 # TODO
 
-+ Document requirement for `make` treesitter parser to be installed
-+ Document (and test thoroughly) the "deep Makefiles" feature
-+ Other configurable run strategies, not just terminal in a vertical split!
-+ Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
-+ Filter out "special" targets like `.PHONY`
-+ Try to support Windows?
+- Document requirement for `make` treesitter parser to be installed
+- Document (and test thoroughly) the "deep Makefiles" feature
+- Other configurable run strategies, not just terminal in a vertical split!
+- Provide an option to change the annotation from `nvim_map(.*)` to something user-defined.
+- Filter out "special" targets like `.PHONY`
+- Try to support Windows?
