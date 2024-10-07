@@ -38,7 +38,9 @@ end
 M.setup = function(o)
     -- short-circuit if there's no make parser
     -- TODO print a warning?
-    if not vim.treesitter.language.get_lang("make") then return end
+    if not vim.treesitter.language.get_lang "make" then
+        return
+    end
 
     opts = vim.tbl_deep_extend("force", {}, default_opts, o or {})
 
